@@ -36,7 +36,34 @@ class ClassFinderTest extends Specification implements SystemOutReader {
         runClassFinder(filename, pattern)
 
         then:
-        'c.d.FooBar\na.b.FooBarBaz\n' == outContent.toString()
+        'c.d.FooBar\n' +
+                'a.b.FooBarBaz\n' == outContent.toString()
+    }
+
+    def 'should return trimmed class names when result is shown'() {
+        given:
+        String filename = 'classes.txt'
+        String pattern = 'YouveComeToThisPoint'
+
+        when:
+        runClassFinder(filename, pattern)
+
+        then:
+        'YouveComeToThisPoint\n' == outContent.toString()
+    }
+
+    def 'should return classes ordered by class name ignoring case'() {
+        given:
+        String filename = 'classes.txt'
+        String pattern = 'Y'
+
+        when:
+        runClassFinder(filename, pattern)
+
+        then:
+        'YoureLeavingUsHere\n' +
+                'YourEyesAreSpinningInTheirSockets\n' +
+                'YouveComeToThisPoint\n' == outContent.toString()
     }
 
     def runClassFinder(String filename, String pattern) {

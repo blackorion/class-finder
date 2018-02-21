@@ -15,13 +15,14 @@ class ClassFinder {
 
         readAllLines(get(properties.filename)).stream()
                 .filter(comparator::matches)
+                .map(String::trim)
                 .sorted(this::byClassName)
                 .forEach(out::println);
     }
 
     private int byClassName(String first, String second) {
         return CommonUtils.fetchClassName(first)
-                .compareTo(CommonUtils.fetchClassName(second));
+                .compareToIgnoreCase(CommonUtils.fetchClassName(second));
     }
 
     static class AppProperties {
